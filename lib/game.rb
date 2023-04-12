@@ -1,91 +1,95 @@
+# frozen_string_literal: true
 
+require 'colorize'
 
 puts "Hangman works here\n"
 
-class Words 
-    attr_reader :hidden
+class Words
+  attr_reader :hidden
 
-def initialize 
-    filename = "dictionary.txt"
+  def initialize
+    filename = 'dictionary.txt'
     text = File.open(filename)
-    all_words = File.read("dictionary.txt").split
-    @hidden = all_words.select { |word| word.length > 5 && word.length < 13}.sample
-end
-
+    all_words = File.read('dictionary.txt').split
+    @hidden = all_words.select { |word| word.length > 5 && word.length < 13 }.sample
+  end
 end
 
 class Game
-    attr_accessor :guesses_left, :made_guesses, :word_progress, :guess
-    attr_reader :word
-   def initialize
+  attr_accessor :guesses_left, :made_guesses, :word_progress, :guess
+  attr_reader :word
+
+  def initialize
     @word = Words.new
     @guesses_left = 9
     @made_guesses = []
-    @word_progress = Array.new(@word.hidden.length, "_")
-    @guess = ""
-   end
+    @word_progress = Array.new(@word.hidden.length, '_')
+    @guess = ''
+  end
 
-def play
+
+
+  def play
     p @word.hidden
     puts "Hello there! The word you need to guess is selected! It has #{@word.hidden.length} letters"
-    #loop
-    loop do 
-    current_guess = ""
-    puts "Enter your chosen letter! You can still make #{@guesses_left} mistakes."
-    valid_input(player_input)
-    check_letters
-    break if winner?
+    # loop
+    loop do
+      puts "Enter your chosen letter! You can still make #{@guesses_left.to_s.colorize(:yellow)} mistakes."
+      valid_input(player_input)
+      break if winner?
     end
-end
+  end
 
-def winner?
-    if @guesses_left == 0 
-        puts "GAME OVER"
-        puts "The words was #{@word.hidden}"
-        return true
+  private
+
+  def winner?
+    if @guesses_left.zero?
+      puts 'GAME OVER'
+      puts "The words was #{@word.hidden.colorize(:yellow)}"
+      true
     elsif @word.hidden == @word_progress.join
-        puts "YOU WON"
-        puts "The words was #{@word.hidden}"
-        return true
-    else 
-        return false
+      puts 'YOU WON'
+      puts "The words was #{@word.hidden.colorize(:yellow)}"
+      true
+    else
+      false
     end
+  end
 
-end
-
-def check_letters
+  def check_letters
     if @word.hidden.include?(@guess)
-        @word_progress.each_with_index do | letter, index |
-            if @guess == @word.hidden[index]
-                @word_progress[index] = @word.hidden[index]
-            
-        end
-        end
-    else 
-        puts "This is not included in the word"
-        @guesses_left -= 1
+      @made_guesses.push(@guess.colorize(:green)) unless @made_guesses.include?(@guess)
+      @word_progress.each_with_index do |_letter, index|
+        @word_progress[index] = @word.hidden[index] if @guess == @word.hidden[index]
+      end
+    else
+      @made_guesses.push(@guess.colorize(:red))
+      puts 'This is not included in the word'
+      @guesses_left -= 1
     end
     display_word
-end
+  end
 
-def display_word
-    puts "Already made guesses: #{@made_guesses}"
-    puts "Progress: #{@word_progress.join(" ")}"
-end 
-    
-def player_input
+  def display_word
+    puts "Already made guesses: #{@made_guesses.join(' ')}"
+    puts "Progress: #{@word_progress.join(' ')}"
+  end
+
+  def player_input
     @guess = gets.chop.downcase.to_s
-end
+  end
 
-def valid_input(players_guess)
-    if !@made_guesses.include?(players_guess) && players_guess.match?(/[A-Za-z]/)
-        @made_guesses.push(players_guess) 
-    else 
-        puts "Not a valid input, try again"
-        valid_input(player_input)
+  def valid_input(players_guess)
+    if (!@made_guesses.include?(players_guess.colorize(:green)) && 
+        !@made_guesses.include?(players_guess.colorize(:red)) &&
+        players_guess.match?(/[A-Za-z]/) && 
+        players_guess.length == 1)
+      check_letters
+    else
+      puts 'Not a valid input, try again'
+      valid_input(player_input)
     end
-end
-
+  end
 end
 
 Game.new.play
