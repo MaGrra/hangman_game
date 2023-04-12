@@ -29,11 +29,28 @@ def play
     p @word.hidden
     puts "Hello there! The word you need to guess is selected! It has #{@word.hidden.length} letters"
     #loop
+    loop do 
     current_guess = ""
     puts "Enter your chosen letter! You can still make #{@guesses_left} mistakes."
     valid_input(player_input)
     check_letters
-    p @guess
+    break if winner?
+    end
+end
+
+def winner?
+    if @guesses_left == 0 
+        puts "GAME OVER"
+        puts "The words was #{@word.hidden}"
+        return true
+    elsif @word.hidden == @word_progress.join
+        puts "YOU WON"
+        puts "The words was #{@word.hidden}"
+        return true
+    else 
+        return false
+    end
+
 end
 
 def check_letters
@@ -45,7 +62,8 @@ def check_letters
         end
         end
     else 
-        print "stil works but different"
+        puts "This is not included in the word"
+        @guesses_left -= 1
     end
     display_word
 end
@@ -56,13 +74,12 @@ def display_word
 end 
     
 def player_input
-    @guess = gets.chop.to_s
+    @guess = gets.chop.downcase.to_s
 end
 
 def valid_input(players_guess)
-    if !@made_guesses.include?(players_guess) && players_guess.match?(/[[:alpha]]/)
+    if !@made_guesses.include?(players_guess) && players_guess.match?(/[A-Za-z]/)
         @made_guesses.push(players_guess) 
-        return players_guess
     else 
         puts "Not a valid input, try again"
         valid_input(player_input)
