@@ -1,0 +1,19 @@
+--- !ruby/object:Game
+word: !ruby/object:Words
+  hidden: carolina
+guesses_left: 8
+made_guesses:
+- "\e[0;32;49ma\e[0m"
+- "\e[0;31;49mp\e[0m"
+- "\e[0;32;49mo\e[0m"
+- "\e[0;32;49ml\e[0m"
+word_progress:
+- _
+- a
+- _
+- o
+- l
+- _
+- _
+- a
+guess: save

@@ -1,0 +1,13 @@
+--- !ruby/object:Game
+word: !ruby/object:Words
+  hidden: sandra
+guesses_left: 9
+made_guesses: []
+word_progress:
+- _
+- _
+- _
+- _
+- _
+- _
+guess: save

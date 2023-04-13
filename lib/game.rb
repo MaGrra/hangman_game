@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 require 'colorize'
-
-puts "Hangman works here\n"
+require 'yaml'
 
 class Words
   attr_reader :hidden
@@ -27,23 +26,13 @@ class Game
     @guess = ''
   end
 
-
-
-  def play
-    p @word.hidden
-    puts "Hello there! The word you need to guess is selected! It has #{@word.hidden.length} letters"
-    # loop
-    loop do
-      puts "Enter your chosen letter! You can still make #{@guesses_left.to_s.colorize(:yellow)} mistakes."
-      valid_input(player_input)
-      break if winner?
-    end
+  def intro
+    puts "Hello there! The word you need to guess is selected! It has #{@word.hidden.length} letters\n\n"
   end
 
-  private
-
   def winner?
-    if @guesses_left.zero?
+    zero = '0'
+    if @guesses_left.to_s == zero.colorize(:yellow) || @guesses_left.zero?
       puts 'GAME OVER'
       puts "The words was #{@word.hidden.colorize(:yellow)}"
       true
@@ -67,7 +56,6 @@ class Game
       puts 'This is not included in the word'
       @guesses_left -= 1
     end
-    display_word
   end
 
   def display_word
@@ -79,17 +67,20 @@ class Game
     @guess = gets.chop.downcase.to_s
   end
 
-  def valid_input(players_guess)
-    if (!@made_guesses.include?(players_guess.colorize(:green)) && 
-        !@made_guesses.include?(players_guess.colorize(:red)) &&
-        players_guess.match?(/[A-Za-z]/) && 
-        players_guess.length == 1)
+  def valid_input
+    puts "Enter your chosen letter! You can still make #{@guesses_left.to_s.colorize(:yellow)} mistakes."
+    puts "Or write 'save' to save the game\n\n"
+    display_word
+    player_input
+    if !@made_guesses.include?(@guess.colorize(:green)) &&
+       !@made_guesses.include?(@guess.colorize(:red)) &&
+       @guess.match?(/[A-Za-z]/) &&
+       @guess.length == 1
       check_letters
+    elsif @guess == 'save'
+      'save'
     else
-      puts 'Not a valid input, try again'
-      valid_input(player_input)
+      puts 'Not a valid input, try again'.bold
     end
   end
 end
-
-Game.new.play

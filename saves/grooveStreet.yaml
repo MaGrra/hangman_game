@@ -1,0 +1,21 @@
+--- !ruby/object:Game
+word: !ruby/object:Words
+  hidden: mortgages
+guesses_left: 8
+made_guesses:
+- "\e[0;32;49me\e[0m"
+- "\e[0;32;49ma\e[0m"
+- "\e[0;32;49mm\e[0m"
+- "\e[0;32;49mo\e[0m"
+- "\e[0;31;49ml\e[0m"
+word_progress:
+- m
+- o
+- _
+- _
+- _
+- a
+- _
+- e
+- _
+guess: save

@@ -1,0 +1,25 @@
+--- !ruby/object:Game
+word: !ruby/object:Words
+  hidden: internet
+guesses_left: 2
+made_guesses:
+- "\e[0;31;49ma\e[0m"
+- "\e[0;32;49me\e[0m"
+- "\e[0;31;49mo\e[0m"
+- "\e[0;31;49mp\e[0m"
+- "\e[0;31;49ml\e[0m"
+- "\e[0;31;49mm\e[0m"
+- "\e[0;31;49mc\e[0m"
+- "\e[0;31;49ms\e[0m"
+- "\e[0;32;49mt\e[0m"
+- "\e[0;32;49mn\e[0m"
+word_progress:
+- _
+- "n"
+- t
+- e
+- _
+- "n"
+- e
+- t
+guess: save
