@@ -1,4 +1,5 @@
 require_relative 'game'
+require_relative 'color'
 
 def save_game(game)
   puts 'Chose a name for the save'

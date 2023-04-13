@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'colorize'
 require 'yaml'
 
 class Words
@@ -32,13 +31,13 @@ class Game
 
   def winner?
     zero = '0'
-    if @guesses_left.to_s == zero.colorize(:yellow) || @guesses_left.zero?
+    if @guesses_left.to_s == zero.yellow || @guesses_left.zero?
       puts 'GAME OVER'
-      puts "The words was #{@word.hidden.colorize(:yellow)}"
+      puts "The words was #{@word.hidden.yellow}"
       true
     elsif @word.hidden == @word_progress.join
       puts 'YOU WON'
-      puts "The words was #{@word.hidden.colorize(:yellow)}"
+      puts "The words was #{@word.hidden.yellow}"
       true
     else
       false
@@ -47,12 +46,12 @@ class Game
 
   def check_letters
     if @word.hidden.include?(@guess)
-      @made_guesses.push(@guess.colorize(:green)) unless @made_guesses.include?(@guess)
+      @made_guesses.push(@guess.green) unless @made_guesses.include?(@guess)
       @word_progress.each_with_index do |_letter, index|
         @word_progress[index] = @word.hidden[index] if @guess == @word.hidden[index]
       end
     else
-      @made_guesses.push(@guess.colorize(:red))
+      @made_guesses.push(@guess.red)
       puts 'This is not included in the word'
       @guesses_left -= 1
     end
@@ -68,12 +67,12 @@ class Game
   end
 
   def valid_input
-    puts "Enter your chosen letter! You can still make #{@guesses_left.to_s.colorize(:yellow)} mistakes."
+    puts "Enter your chosen letter! You can still make #{@guesses_left.to_s.yellow} mistakes."
     puts "Or write 'save' to save the game\n\n"
     display_word
     player_input
-    if !@made_guesses.include?(@guess.colorize(:green)) &&
-       !@made_guesses.include?(@guess.colorize(:red)) &&
+    if !@made_guesses.include?(@guess.green) &&
+       !@made_guesses.include?(@guess.red) &&
        @guess.match?(/[A-Za-z]/) &&
        @guess.length == 1
       check_letters
